@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>No0ne Games | Ultimate Game Portal</title>
+    <title>No0ne Games | 53+ Games</title>
     <style>
         * {
             margin: 0;
@@ -234,17 +234,6 @@
             border-top: 1px solid #333;
         }
 
-        .game-icon {
-            background: linear-gradient(90deg, #222 25%, #333 50%, #222 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-        }
-
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
         ::-webkit-scrollbar { width: 10px; }
         ::-webkit-scrollbar-track { background: #111; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 5px; }
@@ -275,13 +264,13 @@
             <h1>No0ne Games</h1>
         </header>
 
-        <div class="stats" id="gameCount">Loading games...</div>
+        <div class="stats" id="gameCount">Loading 53+ games...</div>
 
         <div class="games-grid" id="gamesGrid">
             <!-- Games will be loaded dynamically -->
         </div>
 
-        <div class="footer"> No0ne Games | Powered by GitHub Pages Proxy </div>
+        <div class="footer"> No0ne Games | Powered by GitHub Pages | 53+ Games </div>
     </div>
 
     <div class="game-view" id="gameView">
@@ -298,32 +287,34 @@
     </div>
 
     <script>
-        // All games from your GitHub Pages site: https://willybilly4653.github.io/games/
-        // Base URL for your GitHub Pages games (your proxy will handle these)
-        const GAMES_BASE_URL = 'https://willybilly4653.github.io/games/';
+        // ============================================
+        // ALL 53+ GAMES - Using https://willybilly4653.github.io/games/FOLDERNAME/
+        // ============================================
         
-        // Game list extracted from your GitHub Pages repository
-        // Format: { name: "Game Name", folder: "folder-name", icon: "icon-url" }
+        const GAMES_BASE = 'https://willybilly4653.github.io/games/';
+        
         const gamesList = [
+            // === GAME FOLDERS FROM YOUR REPOSITORY ===
+            { name: "AMAZE!", folder: "amaze", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzM" },
+            { name: "Bowmasters", folder: "bowmasters", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcNnNnNnNnNnNnNnNnNnNnNnNnNnNnNnNnNnNnNnNnN" },
             { name: "2048 Fusion", folder: "2048-fusion", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqRZ5K5xK5xK5xK5xK5xK5xK5xK5xK5xK5xK5xK5xK5x" },
-            { name: "8 Ball Billiards Classic", folder: "8-ball-classic", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzL5zL5zL5zL5zL5zL5zL5zL5zL5zL5zL5zL5zL5zL5z" },
+            { name: "8 Ball Billiards", folder: "8-ball-classic", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzL5zL5zL5zL5zL5zL5zL5zL5zL5zL5zL5zL5zL5zL5z" },
             { name: "8 Ball Pool", folder: "8-ball-pool", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyMyMyMyMyMyMyMyMyMyMyMyMyMyMyMyMyMyMyMyMyMyM" },
             { name: "99 Balls 3D", folder: "99-balls-3d", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxNxNxNxNxNxNxNxNxNxNxNxNxNxNxNxNxNxNxNxNxN" },
-            { name: "AMAZE!", folder: "amaze", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzM" },
             { name: "Adorable Home", folder: "adorable-home", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaA" },
             { name: "Alien Shooter", folder: "alien-shooter", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbB" },
             { name: "Angry Birds Showdown", folder: "angry-birds-showdown", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcCcCcCcCcCcCcCcCcCcCcCcCcCcCcCcCcCcCcCcCcCcC" },
             { name: "Archery World Tour", folder: "archery-world-tour", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcDdDdDdDdDdDdDdDdDdDdDdDdDdDdDdDdDdDdDdDdD" },
-            { name: "Attack Hole", folder: "attack-hole", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcEeEeEeEeEeEeEeEeEeEeEeEeEeEeEeEeEeEeEeEeE" },
-            { name: "Ball Blast", folder: "ball-blast", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcFfFfFfFfFfFfFfFfFfFfFfFfFfFfFfFfFfFfFfFfF" },
-            { name: "Basket Battle", folder: "basket-battle", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcGgGgGgGgGgGgGgGgGgGgGgGgGgGgGgGgGgGgGgGgG" },
-            { name: "Basketball FRVR", folder: "basketball-frvr", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcHhHhHhHhHhHhHhHhHhHhHhHhHhHhHhHhHhHhHhHhH" },
-            { name: "Bazooka Boy", folder: "bazooka-boy", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiI" },
-            { name: "Block Blast", folder: "block-blast", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcJjJjJjJjJjJjJjJjJjJjJjJjJjJjJjJjJjJjJjJjJ" },
-            { name: "BlockDrop", folder: "blockdrop", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcKkKkKkKkKkKkKkKkKkKkKkKkKkKkKkKkKkKkKkKkK" },
-            { name: "Bolly Beat", folder: "bolly-beat", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcLlLlLlLlLlLlLlLlLlLlLlLlLlLlLlLlLlLlLlLlLlL" },
-            { name: "Bottle Jump 3D", folder: "bottle-jump-3d", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcMmMmMmMmMmMmMmMmMmMmMmMmMmMmMmMmMmMmMmMmM" },
-            { name: "Bowmasters", folder: "bowmasters", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcNnNnNnNnNnNnNnNnNnNnNnNnNnNnNnNnNnNnNnNnN" },
+            { name: "Arena Kingdoms", folder: "arena-kingdoms", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcEeEeEeEeEeEeEeEeEeEeEeEeEeEeEeEeEeEeEeEeE" },
+            { name: "Attack Hole", folder: "attack-hole", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcFfFfFfFfFfFfFfFfFfFfFfFfFfFfFfFfFfFfFfFfF" },
+            { name: "Ball Blast", folder: "ball-blast", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcGgGgGgGgGgGgGgGgGgGgGgGgGgGgGgGgGgGgGgGgG" },
+            { name: "Basket Battle", folder: "basket-battle", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcHhHhHhHhHhHhHhHhHhHhHhHhHhHhHhHhHhHhHhHhH" },
+            { name: "Basketball FRVR", folder: "basketball-frvr", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiI" },
+            { name: "Bazooka Boy", folder: "bazooka-boy", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcJjJjJjJjJjJjJjJjJjJjJjJjJjJjJjJjJjJjJjJjJ" },
+            { name: "Block Blast", folder: "block-blast", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcKkKkKkKkKkKkKkKkKkKkKkKkKkKkKkKkKkKkKkKkK" },
+            { name: "BlockDrop", folder: "blockdrop", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcLlLlLlLlLlLlLlLlLlLlLlLlLlLlLlLlLlLlLlLlLlL" },
+            { name: "Bolly Beat", folder: "bolly-beat", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcMmMmMmMmMmMmMmMmMmMmMmMmMmMmMmMmMmMmMmMmM" },
+            { name: "Bottle Jump 3D", folder: "bottle-jump-3d", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcNnNnNnNnNnNnNnNnNnNnNnNnNnNnNnNnNnNnNnNnN" },
             { name: "Brain Out", folder: "brain-out", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoO" },
             { name: "Bridge Race", folder: "bridge-race", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcPpPpPpPpPpPpPpPpPpPpPpPpPpPpPpPpPpPpPpPpP" },
             { name: "Bubble Pop Star", folder: "bubble-pop-star", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqQqQqQqQqQqQqQqQqQqQqQqQqQqQqQqQqQqQqQqQ" },
@@ -338,8 +329,8 @@
             { name: "Color Water Sort 3D", folder: "color-water-sort-3d", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcZzZzZzZzZzZzZzZzZzZzZzZzZzZzZzZzZzZzZzZzZ" },
             { name: "Crazy Caves", folder: "crazy-caves", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaA" },
             { name: "Crossy Road", folder: "crossy-road", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf1LIVPyxmmUY54ebtS6jxfhHzejVqW7ZMMw&s" },
-            { name: "Cube Tower", folder: "cube-tower", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbB" },
-            { name: "Cut The Rope", folder: "cut-the-rope", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcCcCcCcCcCcCcCcCcCcCcCcCcCcCcCcCcCcCcCcCcC" },
+            { name: "Cube Tower", folder: "cube-tower", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbB" },
+            { name: "Cut The Rope", folder: "cut-the-rope", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcCcCcCcCcCcCcCcCcCcCcCcCcCcCcCcCcCcCcCcCcCcC" },
             { name: "DOP 2", folder: "dop-2", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcDdDdDdDdDdDdDdDdDdDdDdDdDdDdDdDdDdDdDdDdD" },
             { name: "DOP 4", folder: "dop-4", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcEeEeEeEeEeEeEeEeEeEeEeEeEeEeEeEeEeEeEeEeE" },
             { name: "Daily Crossword", folder: "daily-crossword", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcFfFfFfFfFfFfFfFfFfFfFfFfFfFfFfFfFfFfFfFfF" },
@@ -360,7 +351,7 @@
             { name: "Twerk Race 3D", folder: "twerk-race-3d", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRd-uMHIZhrmLNRcoZaHmfhySUEq9flgqx73g&s" }
         ];
 
-        // Store games data for the play function
+        // Store games data
         let gamesData = [];
 
         // Build the games grid
@@ -372,15 +363,14 @@
             gamesData = [];
             
             gamesList.forEach((game, index) => {
-                const gameUrl = `${GAMES_BASE_URL}${game.folder}/`;
+                // Build the URL: https://willybilly4653.github.io/games/FOLDERNAME/
+                const gameUrl = `${GAMES_BASE}${game.folder}/`;
                 
-                // Store in gamesData array
                 gamesData.push({
                     name: game.name,
                     url: gameUrl
                 });
                 
-                // Create game card
                 const card = document.createElement('div');
                 card.className = 'game-card';
                 card.onclick = () => playGame(index, game.name, gameUrl);
@@ -440,7 +430,7 @@
             }
         });
 
-        // Initialize the page
+        // Initialize
         buildGamesGrid();
     </script>
 </body>
