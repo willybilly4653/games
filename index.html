@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No0ne Games</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: block;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .back-to-proxy-btn {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: #222;
+            color: white;
+            border: 1px solid #444;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .back-to-proxy-btn:hover {
+            background: #333;
+            border-color: #666;
+            transform: scale(1.05);
+        }
+
+        .back-to-proxy-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: white;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            /* Removed gradient background - using solid white */
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(255,255,255,0.3);
+            position: relative;
+            display: inline-block;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 25px;
+            padding: 20px;
+        }
+
+        .game-card {
+            background: #111111;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid #333;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            border-color: #666;
+            box-shadow: 0 15px 30px rgba(255,255,255,0.1);
+            background: #1a1a1a;
+        }
+
+        .game-icon {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            border-bottom: 2px solid #333;
+            background: #222;
+        }
+
+        .game-info {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .game-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .play-button {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #333;
+            color: white;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            text-decoration: none;
+            margin-top: 5px;
+            transition: all 0.2s ease;
+            border: 1px solid #555;
+        }
+
+        .game-card:hover .play-button {
+            background: #444;
+            border-color: #777;
+        }
+
+        .stats {
+            text-align: center;
+            color: #888;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .game-view {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 1000;
+        }
+
+        .game-view.active {
+            display: block;
+        }
+
+        .game-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 1001;
+            border-bottom: 1px solid #333;
+        }
+
+        .back-button {
+            background: #333;
+            color: white;
+            border: 1px solid #555;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .back-button:hover {
+            background: #444;
+            border-color: #777;
+            transform: scale(1.05);
+        }
+
+        .back-button:active {
+            transform: scale(0.95);
+        }
+
+        .back-button svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+
+        .game-title {
+            color: white;
+            margin-left: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            flex-grow: 1;
+        }
+
+        .game-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            margin-top: 60px;
+            background: #000;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #333;
+        }
+
+        .game-icon {
+            background: linear-gradient(90deg, #222 25%, #333 50%, #222 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #111; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: #444; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 3rem; }
+            .games-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; padding: 10px; }
+            .game-name { font-size: 0.9rem; }
+            .game-title { font-size: 1rem; }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 2.2rem; }
+            .games-grid { grid-template-columns: repeat(2, 1fr); }
+            .game-header { padding: 0 10px; }
+            .back-button { padding: 6px 12px; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="gamesView">
+        <header>
+            <a class="back-to-proxy-btn" href="/">
+                <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                Back to Proxy
+            </a>
+            <h1>No0ne Games</h1>
+        </header>
+
+        <div class="stats"> 23 Games </div>
+
+        <div class="games-grid">
+            <div class="game-card" onclick="playGame(0, 'Gun Spin', 'https://theairidancegunspin.aaacraps.workers.dev/')">
+                <img class="game-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple123/v4/b2/97/a6/b297a646-beee-ee0b-15b2-1c20760ebe0d/AppIcon-0-0-1x_U007emarketing-0-0-0-7-0-85-220.png/1024x1024bb.png" alt="Gun Spin" loading="lazy">
+                <div class="game-info"><div class="game-name">Gun Spin</div><span class="play-button"> Play</span></div>
+            </div>
+
+
+
+            <div class="game-card" onclick="playGame(2, 'FNAE', 'https://math.lualol.com/gamefile/fnae.html')">
+                <img class="game-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUAHWUmXW5p_n72UZlFYJ9aUWY6crdBhl2Og&s" alt="FNAE" loading="lazy">
+                <div class="game-info"><div class="game-name">FNAE</div><span class="play-button"> Play</span></div>
+            </div>
+
+            <div class="game-card" onclick="playGame(3, 'Stick man Gta', 'https://stickmangta.aaacraps.workers.dev/')">
+                <img class="game-icon" src="https://www.onlinegames.io/media/posts/900/responsive/stickman-gta-city-free-xs.jpg" alt="Stick man Gta" loading="lazy">
+                <div class="game-info"><div class="game-name">Stick man Gta</div><span class="play-button"> Play</span></div>
+            </div>
+
+            <div class="game-card" onclick="playGame(4, 'Granny', 'https://math.lualol.com/gamefile/tung.html')">
+                <img class="game-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8X5JjpaXIFfsI2KKuU_kjCFDAGJZxktgz3g&s" alt="Granny" loading="lazy">
+                <div class="game-info"><div class="game-name">Granny</div><span class="play-button"> Play</span></div>
+            </div>
+
+            <div class="game-card" onclick="playGame(5, 'Cookie Clicker', 'https://math.lualol.com/games/cookie-clicker/index.html')">
+                <img class="game-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUaILhFYRcXKcCxVOrB2i-1Jo4kfIxh7rIag&s" alt="Cookie Clicker" loading="lazy">
+                <div class="game-info"><div class="game-name">Cookie Clicker</div><span class="play-button"> Play</span></div>
+            </div>
+
+            <div class="game-card" onclick="playGame(6, 'Escape Road', 'https://math.lualol.com/gamefile/escape.html')">
+                <img class="game-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkf70EeBTZRRJAn9fvuL0wwQglMCYEoaPJEQ&s" alt="Escape Road" loading="lazy">
+                <div class="game-info"><div class="game-name">Escape Road</div><span class="play-button"> Play</span></div>
+            </div>
+
+            <div class="game-card" onclick="playGame(7, 'Escape Road 2', 'https://escaperoad.aaacraps.workers.dev/')">
+                <img class="game-icon" src="https://escaperoadcity2.io/data/image/game/escape-road-city-2.png" alt="Escape Road 2" loading="lazy">
+                <div class="game-info"><div class="game-name">Escape Road 2</div><span class="play-button"> Play</span></div>
+            </div>
+
+            <div class="game-card" onclick="playGame(8, 'Subway Surfers', 'https://math.lualol.com/games/subway-surfers/index.html')">
+                <img class="game-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQv581lSJvWo4pRSP97wi8hum56FJUOndEJbQ&s" alt="Subway Surfers" loading="lazy">
+                <div class="game-info"><div class="game-name">Subway Surfers</div><span class="play-button"> Play</span></div>
+            </div>
+
+            <div class="game-card" onclick="playGame(9, 'Space Waves', 'https://math.lualol.com/gamefile/spacewaves.html')">
+                <img class="game-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlvpINlHVXkHS4cpT7NznJUU6LA6B1WsDhkw&s" alt="Space Waves" loading="lazy">
+                <div class="game-info"><div class="game-name">Space Waves</div><span class="play-button"> Play</span></div>
+            </div>
+
+            <div class="game-card" onclick="playGame(10, 'Mathist', 'https://multiplication.testson.top')">
+                <img class="game-icon" src="https://via.placeholder.com/150?text=Mathist" alt="Mathist" loading="lazy">
+                <div class="game-info"><div class="game-name">Mathist</div><span class="play-button"> Play</span></div>
+            </div>
+
+            <div class="game-card" onclick="playGame(11, 'Wordle Unlimited', 'https://math.lualol.com/games/wordle-unlimited/index.html')">
+                <img class="game-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNu9eNxjCeX0oNrdUvyWCkY_t_CBtFA1fNmA&s" alt="Wordle Unlimited" loading="lazy">
+                <div class="game-info"><div class="game-name">Wordle Unlimited</div><span class="play-button"> Play</span></div>
+            </div>
+
+            <div class="game-card" onclick="playGame(12, 'Meme Soundboard', 'https://soundboardguys.com/?ref=producthunt')">
+                <img class="game-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCyvlABdrfx6pG9ZVOGzkzT7EZFLG2Hk3z1Q&s" alt="Meme Soundboard" loading="lazy">
+                <div class="game-info"><div class="game-name">Meme Soundboard</div><span class="play-button"> Play</span></div>
+            </div>
+
+            <div class="game-card" onclick="playGame(13, 'Block Blast', 'https://blockblast.aaacraps.workers.dev/')">
+                <img class="game-icon" src="https://thehofstrachronicle.com/wp-content/uploads/2025/03/block-blast.png" alt="Block Blast" loading="lazy">
+                <div class="game-info"><div class="game-name">Block Blast</div><span class="play-button"> Play</span></div>
+            </div>
+
+            <div class="game-card" onclick="playGame(14, 'Stickman Hook', 'https://hooktest.aaacraps.workers.dev/')">
+                <img class="game-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKclUg-7v0l4KeCYELMzTrsaHvwJ1uubNfkw&s" alt="Stickman Hook" loading="lazy">
+                <div class="game-info"><div class="game-name">Stickman Hook</div><span class="play-button"> Play</span></div>
+            </div>
+
+            <div class="game-card" onclick="playGame(15, 'Duck Life', 'https://ducklife.aaacraps.workers.dev/')">
+                <img class="game-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5GdAbv5dSITcuVtwHYxx5VlAmqagd9pkSSw&s" alt="Duck Life" loading="lazy">
+                <div class="game-info"><div class="game-name">Duck Life</div><span class="play-button"> Play</span></div>
+            </div>
+
+            <div class="game-card" onclick="playGame(16, 'Survival Karts', 'https://karts.aaacraps.workers.dev/')">
+                <img class="game-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpgKJn4U5HmiZt-I52kiwmnJB-phnwfRdIvQ&s" alt="Survival Karts" loading="lazy">
+                <div class="game-info"><div class="game-name">Survival Karts</div><span class="play-button"> Play</span></div>
+            </div>
+
+            <div class="game-card" onclick="playGame(17, 'Slice Master', 'https://slicemaster.aaacraps.workers.dev/')">
+                <img class="game-icon" src="https://imgs.crazygames.com/slice-master_16x9/20240731033229/slice-master_16x9-cover?metadata=none&quality=100&width=1200&height=630&fit=crop" alt="Slice Master" loading="lazy">
+                <div class="game-info"><div class="game-name">Slice Master</div><span class="play-button"> Play</span></div>
+            </div>
+
+            <div class="game-card" onclick="playGame(18, 'Flappy Bird', 'https://flappy.aaacraps.workers.dev/')">
+                <img class="game-icon" src="https://upload.wikimedia.org/wikipedia/en/0/0a/Flappy_Bird_icon.png" alt="Flappy Bird" loading="lazy">
+                <div class="game-info"><div class="game-name">Flappy Bird</div><span class="play-button"> Play</span></div>
+            </div>
+
+            <div class="game-card" onclick="playGame(19, 'Agar.io', 'https://agario.aaacraps.workers.dev')">
+                <img class="game-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHaBmrNqCK6xfStjMmy-bdzsHuUOn3DBkd7w&s" alt="Agar.io" loading="lazy">
+                <div class="game-info"><div class="game-name">Agar.io</div><span class="play-button"> Play</span></div>
+            </div>
+
+            <div class="game-card" onclick="playGame(20, 'Twerk Race 3D', 'https://twerk.aaacraps.workers.dev/')">
+                <img class="game-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRd-uMHIZhrmLNRcoZaHmfhySUEq9flgqx73g&s" alt="Twerk Race 3D" loading="lazy">
+                <div class="game-info"><div class="game-name">Twerk Race 3D</div><span class="play-button"> Play</span></div>
+            </div>
+
+            <div class="game-card" onclick="playGame(21, 'Crossy Road', 'https://crossyroad.aaacraps.workers.dev/')">
+                <img class="game-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf1LIVPyxmmUY54ebtS6jxfhHzejVqW7ZMMw&s" alt="Crossy Road" loading="lazy">
+                <div class="game-info"><div class="game-name">Crossy Road</div><span class="play-button"> Play</span></div>
+            </div>
+
+            <div class="game-card" onclick="playGame(22, 'Paper.io', 'https://paperio.aaacraps.workers.dev/')">
+                <img class="game-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbOYDL-XogArpPn5yhnKk4E0pRDmWTIRXnxA&s" alt="Paper.io" loading="lazy">
+                <div class="game-info"><div class="game-name">Paper.io</div><span class="play-button"> Play</span></div>
+            </div>
+        </div>
+
+        <div class="footer"> No0ne Games </div>
+    </div>
+
+    <div class="game-view" id="gameView">
+        <div class="game-header">
+            <button class="back-button" onclick="backToGames()">
+                <svg viewBox="0 0 24 24">
+                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                </svg>
+                Back to Games
+            </button>
+            <div class="game-title" id="gameTitle"></div>
+        </div>
+        <iframe class="game-iframe" id="gameIframe" src="" allowfullscreen></iframe>
+    </div>
+
+    <script>
+        const gamesData = [
+            {"name":"Gun Spin","url":"https://theairidancegunspin.aaacraps.workers.dev/"},
+            {"name":"FNAE","url":"https://math.lualol.com/gamefile/fnae.html"},
+            {"name":"Stick man Gta","url":"https://stickmangta.aaacraps.workers.dev/"},
+            {"name":"Granny","url":"https://math.lualol.com/gamefile/tung.html"},
+            {"name":"Cookie Clicker","url":"https://math.lualol.com/games/cookie-clicker/index.html"},
+            {"name":"Escape Road","url":"https://math.lualol.com/gamefile/escape.html"},
+            {"name":"Escape Road 2","url":"https://escaperoad.aaacraps.workers.dev/"},
+            {"name":"Subway Surfers","url":"https://math.lualol.com/games/subway-surfers/index.html"},
+            {"name":"Space Waves","url":"https://math.lualol.com/gamefile/spacewaves.html"},
+            {"name":"Mathist","url":"https://multiplication.testson.top"},
+            {"name":"Wordle Unlimited","url":"https://math.lualol.com/games/wordle-unlimited/index.html"},
+            {"name":"Meme Soundboard","url":"https://soundboardguys.com/?ref=producthunt"},
+            {"name":"Block Blast","url":"https://blockblast.aaacraps.workers.dev/"},
+            {"name":"Stickman Hook","url":"https://hooktest.aaacraps.workers.dev/"},
+            {"name":"Duck Life","url":"https://ducklife.aaacraps.workers.dev/"},
+            {"name":"Survival Karts","url":"https://karts.aaacraps.workers.dev/"},
+            {"name":"Slice Master","url":"https://slicemaster.aaacraps.workers.dev/"},
+            {"name":"Flappy Bird","url":"https://flappy.aaacraps.workers.dev/"},
+            {"name":"Agar.io","url":"https://agario.aaacraps.workers.dev"},
+            {"name":"Twerk Race 3D","url":"https://twerk.aaacraps.workers.dev/"},
+            {"name":"Crossy Road","url":"https://crossyroad.aaacraps.workers.dev/"},
+            {"name":"Paper.io","url":"https://paperio.aaacraps.workers.dev/"}
+        ];
+
+        function playGame(index, name, url) {
+            document.getElementById('gamesView').style.display = 'none';
+            document.getElementById('gameView').classList.add('active');
+            document.getElementById('gameTitle').textContent = name;
+            document.getElementById('gameIframe').src = url;
+            history.pushState({game: index}, name, '#game');
+        }
+
+        function backToGames() {
+            document.getElementById('gamesView').style.display = 'block';
+            document.getElementById('gameView').classList.remove('active');
+            document.getElementById('gameIframe').src = 'about:blank';
+            history.pushState({view: 'games'}, 'No0ne Games', '/games');
+        }
+
+        window.addEventListener('popstate', function(event) {
+            if (event.state && event.state.game !== undefined) {
+                const game = gamesData[event.state.game];
+                if (game) {
+                    document.getElementById('gamesView').style.display = 'none';
+                    document.getElementById('gameView').classList.add('active');
+                    document.getElementById('gameTitle').textContent = game.name;
+                    document.getElementById('gameIframe').src = game.url;
+                }
+            } else {
+                document.getElementById('gamesView').style.display = 'block';
+                document.getElementById('gameView').classList.remove('active');
+                document.getElementById('gameIframe').src = 'about:blank';
+            }
+        });
+
+        document.querySelectorAll('.game-icon').forEach(img => {
+            img.addEventListener('error', function() {
+                this.src = 'https://via.placeholder.com/150?text=' + encodeURIComponent(this.alt);
+            });
+        });
+
+        if (window.location.hash === '#game') {
+            backToGames();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.getElementById('gameView').classList.contains('active')) {
+                backToGames();
+            }
+        });
+    </script>
+</body>
+</html>
