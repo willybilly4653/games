@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>No0ne Games | 100+ Free Games</title>
-    <!-- x-frame-bypass script - allows embedding normally blocked games -->
+    <title>No0ne Games</title>
     <script type="module" src="https://unpkg.com/x-frame-bypass@1.0.2/dist/x-frame-bypass.js"></script>
     <style>
         * {
@@ -107,7 +106,7 @@
             aspect-ratio: 1;
             object-fit: cover;
             border-bottom: 2px solid #333;
-            background: #1a1a1a;
+            background: #222;
         }
 
         .game-info {
@@ -119,28 +118,10 @@
             font-size: 1rem;
             font-weight: 600;
             color: #fff;
-            margin-bottom: 5px;
+            margin-bottom: 0;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-        }
-
-        .play-button {
-            display: inline-block;
-            padding: 5px 15px;
-            background: #333;
-            color: white;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            text-decoration: none;
-            margin-top: 5px;
-            transition: all 0.2s ease;
-            border: 1px solid #555;
-        }
-
-        .game-card:hover .play-button {
-            background: #444;
-            border-color: #777;
         }
 
         .stats {
@@ -178,6 +159,8 @@
             padding: 0 20px;
             z-index: 1001;
             border-bottom: 1px solid #333;
+            gap: 15px;
+            flex-wrap: wrap;
         }
 
         .back-button {
@@ -201,19 +184,42 @@
             transform: scale(1.05);
         }
 
-        .back-button:active {
-            transform: scale(0.95);
-        }
-
         .back-button svg {
             width: 20px;
             height: 20px;
             fill: white;
         }
 
+        .newtab-header-btn {
+            background: #1a3a5c;
+            color: white;
+            border: 1px solid #2c5a8c;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .newtab-header-btn:hover {
+            background: #2c5a8c;
+            border-color: #4a8cbb;
+            transform: scale(1.05);
+        }
+
+        .newtab-header-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: white;
+        }
+
         .game-title {
             color: white;
-            margin-left: 20px;
+            margin-left: 0;
             font-size: 1.2rem;
             font-weight: 600;
             flex-grow: 1;
@@ -227,6 +233,40 @@
             background: #000;
         }
 
+        .error-message {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: calc(100% - 60px);
+            margin-top: 60px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .error-message h3 {
+            color: #ff6b6b;
+            margin-bottom: 15px;
+        }
+
+        .error-message button {
+            background: #333;
+            color: white;
+            border: 1px solid #555;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.2s ease;
+        }
+
+        .error-message button:hover {
+            background: #444;
+            border-color: #777;
+            transform: scale(1.05);
+        }
+
         .footer {
             text-align: center;
             margin-top: 50px;
@@ -234,6 +274,17 @@
             color: #666;
             font-size: 0.9rem;
             border-top: 1px solid #333;
+        }
+
+        .game-icon {
+            background: linear-gradient(90deg, #222 25%, #333 50%, #222 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
 
         ::-webkit-scrollbar { width: 10px; }
@@ -246,6 +297,8 @@
             .games-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; padding: 10px; }
             .game-name { font-size: 0.9rem; }
             .game-title { font-size: 1rem; }
+            .game-header { gap: 8px; padding: 0 10px; }
+            .back-button, .newtab-header-btn { padding: 6px 12px; font-size: 0.85rem; }
         }
 
         @media (max-width: 480px) {
@@ -270,7 +323,7 @@
 
         <div class="games-grid" id="gamesGrid"></div>
 
-        <div class="footer"> No0ne Games | 100+ Free Games | Play Now!</div>
+        <div class="footer"> No0ne Games </div>
     </div>
 
     <div class="game-view" id="gameView">
@@ -282,61 +335,49 @@
                 Back to Games
             </button>
             <div class="game-title" id="gameTitle"></div>
+            <button class="newtab-header-btn" id="openNewTabHeaderBtn">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
+                </svg>
+                Open in New Tab
+            </button>
         </div>
-        <!-- Using x-frame-bypass iframe to bypass X-Frame-Options blocking -->
-        <iframe is="x-frame-bypass" class="game-iframe" id="gameIframe" src="" allowfullscreen></iframe>
+        <div id="iframeContainer" style="height: calc(100% - 60px); margin-top: 60px;">
+            <iframe is="x-frame-bypass" class="game-iframe" id="gameIframe" src="" allowfullscreen></iframe>
+        </div>
     </div>
 
     <script>
-        // ============================================
-        // ALL GAMES - Original No0ne Games + GitHub Games
-        // Total: 100+ Games with x-frame-bypass support
-        // ============================================
-        
-        function getFaviconUrl(gameUrl) {
-            try {
-                const url = new URL(gameUrl);
-                return `https://www.google.com/s2/favicons?domain=${url.hostname}&sz=128`;
-            } catch(e) {
-                return `https://www.google.com/s2/favicons?domain=willybilly4653.github.io&sz=128`;
-            }
-        }
-        
-        function getFallbackIcon(gameName) {
-            const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c', '#e67e22', '#34495e'];
-            const colorIndex = gameName.length % colors.length;
-            const initials = gameName.split(' ').map(word => word[0]).join('').slice(0, 2).toUpperCase();
-            return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='${colors[colorIndex].replace('#', '%23')}'/%3E%3Ctext x='50' y='55' font-size='32' text-anchor='middle' fill='white' font-family='Arial, sans-serif' font-weight='bold'%3E${initials}%3C/text%3E%3C/svg%3E`;
-        }
-        
-        // ORIGINAL NO0NE GAMES (External working links) - INCLUDES PAPER.IO
+        let currentGameUrl = '';
+        let currentGameName = '';
+        let loadTimeout = null;
+
         const originalGames = [
-            { name: "Gun Spin", url: "https://theairidancegunspin.aaacraps.workers.dev/" },
-            { name: "FNAE", url: "https://math.lualol.com/gamefile/fnae.html" },
-            { name: "Stick man Gta", url: "https://stickmangta.aaacraps.workers.dev/" },
-            { name: "Granny", url: "https://math.lualol.com/gamefile/tung.html" },
-            { name: "Cookie Clicker", url: "https://math.lualol.com/games/cookie-clicker/index.html" },
-            { name: "Escape Road", url: "https://math.lualol.com/gamefile/escape.html" },
-            { name: "Escape Road 2", url: "https://escaperoad.aaacraps.workers.dev/" },
-            { name: "Subway Surfers", url: "https://math.lualol.com/games/subway-surfers/index.html" },
-            { name: "Space Waves", url: "https://math.lualol.com/gamefile/spacewaves.html" },
-            { name: "Mathist", url: "https://multiplication.testson.top" },
-            { name: "Wordle Unlimited", url: "https://math.lualol.com/games/wordle-unlimited/index.html" },
-            { name: "Meme Soundboard", url: "https://soundboardguys.com/?ref=producthunt" },
-            { name: "Block Blast", url: "https://blockblast.aaacraps.workers.dev/" },
-            { name: "Stickman Hook", url: "https://hooktest.aaacraps.workers.dev/" },
-            { name: "Duck Life", url: "https://ducklife.aaacraps.workers.dev/" },
-            { name: "Survival Karts", url: "https://karts.aaacraps.workers.dev/" },
-            { name: "Slice Master", url: "https://slicemaster.aaacraps.workers.dev/" },
-            { name: "Flappy Bird", url: "https://flappy.aaacraps.workers.dev/" },
-            { name: "Agar.io", url: "https://agario.aaacraps.workers.dev" },
-            { name: "Twerk Race 3D", url: "https://twerk.aaacraps.workers.dev/" },
-            { name: "Crossy Road", url: "https://crossyroad.aaacraps.workers.dev/" },
-            { name: "Paper.io", url: "https://paperio.aaacraps.workers.dev/" },
-            { name: "Slope", url: "https://slope.aaacraps.workers.dev/" }
+            { name: "Gun Spin", url: "https://theairidancegunspin.aaacraps.workers.dev/", icon: "https://is1-ssl.mzstatic.com/image/thumb/Purple123/v4/b2/97/a6/b297a646-beee-ee0b-15b2-1c20760ebe0d/AppIcon-0-0-1x_U007emarketing-0-0-0-7-0-85-220.png/1024x1024bb.png" },
+            { name: "FNAE", url: "https://math.lualol.com/gamefile/fnae.html", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUAHWUmXW5p_n72UZlFYJ9aUWY6crdBhl2Og&s" },
+            { name: "Stick man Gta", url: "https://stickmangta.aaacraps.workers.dev/", icon: "https://www.onlinegames.io/media/posts/900/responsive/stickman-gta-city-free-xs.jpg" },
+            { name: "Granny", url: "https://math.lualol.com/gamefile/tung.html", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8X5JjpaXIFfsI2KKuU_kjCFDAGJZxktgz3g&s" },
+            { name: "Cookie Clicker", url: "https://math.lualol.com/games/cookie-clicker/index.html", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUaILhFYRcXKcCxVOrB2i-1Jo4kfIxh7rIag&s" },
+            { name: "Escape Road", url: "https://math.lualol.com/gamefile/escape.html", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkf70EeBTZRRJAn9fvuL0wwQglMCYEoaPJEQ&s" },
+            { name: "Escape Road 2", url: "https://escaperoad.aaacraps.workers.dev/", icon: "https://escaperoadcity2.io/data/image/game/escape-road-city-2.png" },
+            { name: "Subway Surfers", url: "https://math.lualol.com/games/subway-surfers/index.html", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQv581lSJvWo4pRSP97wi8hum56FJUOndEJbQ&s" },
+            { name: "Space Waves", url: "https://math.lualol.com/gamefile/spacewaves.html", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlvpINlHVXkHS4cpT7NznJUU6LA6B1WsDhkw&s" },
+            { name: "Mathist", url: "https://multiplication.testson.top", icon: "https://via.placeholder.com/150?text=Mathist" },
+            { name: "Wordle Unlimited", url: "https://math.lualol.com/games/wordle-unlimited/index.html", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNu9eNxjCeX0oNrdUvyWCkY_t_CBtFA1fNmA&s" },
+            { name: "Meme Soundboard", url: "https://soundboardguys.com/?ref=producthunt", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCyvlABdrfx6pG9ZVOGzkzT7EZFLG2Hk3z1Q&s" },
+            { name: "Block Blast", url: "https://blockblast.aaacraps.workers.dev/", icon: "https://thehofstrachronicle.com/wp-content/uploads/2025/03/block-blast.png" },
+            { name: "Stickman Hook", url: "https://hooktest.aaacraps.workers.dev/", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKclUg-7v0l4KeCYELMzTrsaHvwJ1uubNfkw&s" },
+            { name: "Duck Life", url: "https://ducklife.aaacraps.workers.dev/", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5GdAbv5dSITcuVtwHYxx5VlAmqagd9pkSSw&s" },
+            { name: "Survival Karts", url: "https://karts.aaacraps.workers.dev/", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpgKJn4U5HmiZt-I52kiwmnJB-phnwfRdIvQ&s" },
+            { name: "Slice Master", url: "https://slicemaster.aaacraps.workers.dev/", icon: "https://imgs.crazygames.com/slice-master_16x9/20240731033229/slice-master_16x9-cover?metadata=none&quality=100&width=1200&height=630&fit=crop" },
+            { name: "Flappy Bird", url: "https://flappy.aaacraps.workers.dev/", icon: "https://upload.wikimedia.org/wikipedia/en/0/0a/Flappy_Bird_icon.png" },
+            { name: "Agar.io", url: "https://agario.aaacraps.workers.dev", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHaBmrNqCK6xfStjMmy-bdzsHuUOn3DBkd7w&s" },
+            { name: "Twerk Race 3D", url: "https://twerk.aaacraps.workers.dev/", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRd-uMHIZhrmLNRcoZaHmfhySUEq9flgqx73g&s" },
+            { name: "Crossy Road", url: "https://crossyroad.aaacraps.workers.dev/", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf1LIVPyxmmUY54ebtS6jxfhHzejVqW7ZMMw&s" },
+            { name: "Paper.io", url: "https://paperio.aaacraps.workers.dev/", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbOYDL-XogArpPn5yhnKk4E0pRDmWTIRXnxA&s" },
+            { name: "Slope", url: "https://slope.aaacraps.workers.dev/", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3lnyWQirtygQAxUFAEMooU4lVOOLbtgeYfw&s" }
         ];
 
-        // YOUR GITHUB GAMES
         const githubGames = [
             { name: "3D Bolt Master", url: "https://willybilly4653.github.io/games/3d-bolt-master/" },
             { name: "3D Bowling", url: "https://willybilly4653.github.io/games/3d-bowling/" },
@@ -421,9 +462,95 @@
         const allGames = [...originalGames, ...githubGames];
         let gamesData = [];
 
-        function handleImageError(img, gameName) {
-            img.onerror = null;
-            img.src = getFallbackIcon(gameName);
+        function getLetterIcon(gameName) {
+            const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c', '#e67e22', '#34495e'];
+            const colorIndex = gameName.length % colors.length;
+            const initials = gameName.split(' ').map(word => word[0]).join('').slice(0, 2).toUpperCase();
+            return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='${colors[colorIndex].replace('#', '%23')}'/%3E%3Ctext x='50' y='55' font-size='32' text-anchor='middle' fill='white' font-family='Arial, sans-serif' font-weight='bold'%3E${initials}%3C/text%3E%3C/svg%3E`;
+        }
+
+        function playGame(index, name, url) {
+            currentGameUrl = url;
+            currentGameName = name;
+            
+            if (loadTimeout) clearTimeout(loadTimeout);
+            
+            const container = document.getElementById('iframeContainer');
+            const oldError = document.getElementById('errorMessage');
+            if (oldError) oldError.remove();
+            
+            const iframe = document.getElementById('gameIframe');
+            iframe.style.display = 'block';
+            iframe.src = url;
+            
+            document.getElementById('gamesView').style.display = 'none';
+            document.getElementById('gameView').classList.add('active');
+            document.getElementById('gameTitle').textContent = name;
+            
+            loadTimeout = setTimeout(() => {
+                try {
+                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                    if (iframeDoc && iframeDoc.body) {
+                        const hasContent = iframeDoc.body.children.length > 0;
+                        const bodyText = iframeDoc.body.innerText || iframeDoc.body.textContent;
+                        const isBlackScreen = !hasContent && (!bodyText || bodyText.trim() === '');
+                        if (isBlackScreen) showErrorFallback();
+                    }
+                } catch(e) {}
+            }, 5000);
+            
+            iframe.onload = () => { if (loadTimeout) clearTimeout(loadTimeout); };
+            
+            history.pushState({ game: index, name: name, url: url }, name, '#game');
+        }
+
+        function showErrorFallback() {
+            const container = document.getElementById('iframeContainer');
+            const iframe = document.getElementById('gameIframe');
+            iframe.style.display = 'none';
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.id = 'errorMessage';
+            errorDiv.innerHTML = `
+                <h3>Game didn't load</h3>
+                <p>Try opening in a new tab:</p>
+                <button id="openNewTabBtn">Open in New Tab</button>
+                <button id="goBackBtn">Back to Games</button>
+            `;
+            container.appendChild(errorDiv);
+            document.getElementById('openNewTabBtn').onclick = () => { window.open(currentGameUrl, '_blank'); backToGames(); };
+            document.getElementById('goBackBtn').onclick = () => backToGames();
+        }
+
+        function buildGamesGrid() {
+            const grid = document.getElementById('gamesGrid');
+            const gameCountSpan = document.getElementById('gameCount');
+            grid.innerHTML = '';
+            gamesData = [];
+            
+            allGames.forEach((game, index) => {
+                gamesData.push({ name: game.name, url: game.url });
+                const card = document.createElement('div');
+                card.className = 'game-card';
+                card.onclick = () => playGame(index, game.name, game.url);
+                const iconImg = document.createElement('img');
+                iconImg.className = 'game-icon';
+                if (game.icon) {
+                    iconImg.src = game.icon;
+                    iconImg.onerror = function() { this.src = getLetterIcon(game.name); };
+                } else {
+                    iconImg.src = getLetterIcon(game.name);
+                }
+                iconImg.alt = game.name;
+                iconImg.loading = 'lazy';
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'game-info';
+                infoDiv.innerHTML = `<div class="game-name">${escapeHtml(game.name)}</div>`;
+                card.appendChild(iconImg);
+                card.appendChild(infoDiv);
+                grid.appendChild(card);
+            });
+            gameCountSpan.textContent = `${gamesData.length} Games`;
         }
 
         function escapeHtml(str) {
@@ -435,79 +562,23 @@
             });
         }
 
-        function buildGamesGrid() {
-            const grid = document.getElementById('gamesGrid');
-            const gameCountSpan = document.getElementById('gameCount');
-            
-            grid.innerHTML = '';
-            gamesData = [];
-            
-            allGames.forEach((game, index) => {
-                gamesData.push({ name: game.name, url: game.url });
-                
-                const card = document.createElement('div');
-                card.className = 'game-card';
-                card.onclick = () => playGame(index, game.name, game.url);
-                
-                let iconUrl;
-                if (game.url.includes('willybilly4653.github.io')) {
-                    const folderName = game.url.split('/').slice(-2)[0];
-                    iconUrl = `https://www.google.com/s2/favicons?domain=willybilly4653.github.io/games/${folderName}/&sz=128`;
-                } else {
-                    iconUrl = getFaviconUrl(game.url);
-                }
-                
-                const iconImg = document.createElement('img');
-                iconImg.className = 'game-icon';
-                iconImg.src = iconUrl;
-                iconImg.alt = game.name;
-                iconImg.loading = 'lazy';
-                iconImg.onerror = function() { handleImageError(this, game.name); };
-                
-                const infoDiv = document.createElement('div');
-                infoDiv.className = 'game-info';
-                infoDiv.innerHTML = `
-                    <div class="game-name">${escapeHtml(game.name)}</div>
-                    <span class="play-button">Play</span>
-                `;
-                
-                card.appendChild(iconImg);
-                card.appendChild(infoDiv);
-                grid.appendChild(card);
-            });
-            
-            gameCountSpan.textContent = `(${gamesData.length}) Games`;
-        }
-
-        function playGame(index, name, url) {
-            document.getElementById('gamesView').style.display = 'none';
-            document.getElementById('gameView').classList.add('active');
-            document.getElementById('gameTitle').textContent = name;
-            // x-frame-bypass iframe will handle the URL automatically
-            document.getElementById('gameIframe').src = url;
-            history.pushState({ game: index }, name, '#game');
-        }
-
         function backToGames() {
+            if (loadTimeout) clearTimeout(loadTimeout);
             document.getElementById('gamesView').style.display = 'block';
             document.getElementById('gameView').classList.remove('active');
             document.getElementById('gameIframe').src = 'about:blank';
-            history.pushState({ view: 'games' }, 'No0ne Games', '/');
+            document.getElementById('gameIframe').style.display = 'block';
+            const errorMsg = document.getElementById('errorMessage');
+            if (errorMsg) errorMsg.remove();
+            history.pushState({ view: 'games' }, 'No0ne Games', '/games');
         }
 
         window.addEventListener('popstate', function(event) {
             if (event.state && event.state.game !== undefined) {
                 const game = gamesData[event.state.game];
-                if (game) {
-                    document.getElementById('gamesView').style.display = 'none';
-                    document.getElementById('gameView').classList.add('active');
-                    document.getElementById('gameTitle').textContent = game.name;
-                    document.getElementById('gameIframe').src = game.url;
-                }
+                if (game) playGame(event.state.game, game.name, game.url);
             } else {
-                document.getElementById('gamesView').style.display = 'block';
-                document.getElementById('gameView').classList.remove('active');
-                document.getElementById('gameIframe').src = 'about:blank';
+                backToGames();
             }
         });
 
@@ -515,6 +586,10 @@
             if (e.key === 'Escape' && document.getElementById('gameView').classList.contains('active')) {
                 backToGames();
             }
+        });
+
+        document.getElementById('openNewTabHeaderBtn').addEventListener('click', () => {
+            if (currentGameUrl) window.open(currentGameUrl, '_blank');
         });
 
         buildGamesGrid();
